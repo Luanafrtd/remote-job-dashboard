@@ -3,13 +3,24 @@
 A modern, responsive dashboard for tracking remote job applications — built with **Next.js 15** (App Router), **TypeScript**, and **Tailwind CSS v4**. Includes authentication UI backed by a real middleware route guard, streaming server components with Suspense skeletons, interactive charts, and a full profile/settings experience.
 
 [![CI](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://remote-job-dashboard.vercel.app)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Luanafrtd/remote-job-dashboard)
 
+## Live Demo
+
+### 🔗 [remote-job-dashboard.vercel.app](https://remote-job-dashboard.vercel.app)
+
+Deployed on Vercel, connected to this repo — every push to `main` auto-deploys. The root URL redirects to `/login`; sign in with any non-empty email/password, or use **Continue as guest**, to reach the protected dashboard (there's no real backend, so any input works).
+
 > **Note:** This is a front-end portfolio project. Authentication is a real middleware-enforced route guard, but the "session" it checks is a demo cookie set on submit — there is no backend or database behind it. See [Notes on the mock backend](#notes-on-the-mock-backend) for what a production swap-in looks like.
+
+## Overview
+
+Remote Job Dashboard is a self-contained demo of what a production job-search tracker's front end looks like: a protected dashboard behind real middleware, streaming server components, a full auth flow, and a profile/settings area — all statically prerendered and deployed on Vercel. It exists to show how the pieces of a modern Next.js App Router app fit together: route groups, server/client component boundaries, a swappable data-access layer, and production metadata, rather than to be a real product with a backend.
 
 ## Screenshots
 
