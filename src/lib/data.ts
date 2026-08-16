@@ -34,7 +34,12 @@ export const categoryStats: CategoryStat[] = [
 
 export const statusStats: StatusStat[] = [
   { status: "applied", label: "Applied", value: 62, color: "var(--chart-1)" },
-  { status: "interviewing", label: "Interviewing", value: 9, color: "var(--chart-2)" },
+  {
+    status: "interviewing",
+    label: "Interviewing",
+    value: 9,
+    color: "var(--chart-2)",
+  },
   { status: "offer", label: "Offer", value: 4, color: "var(--chart-3)" },
   { status: "rejected", label: "Rejected", value: 53, color: "var(--chart-5)" },
 ];

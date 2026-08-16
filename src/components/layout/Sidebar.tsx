@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/lib/routes";
+import { destroySession } from "@/lib/session";
 
 interface NavLink {
   label: string;
@@ -23,7 +25,7 @@ interface NavLink {
 }
 
 const mainLinks: NavLink[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: ROUTES.dashboard, icon: LayoutDashboard },
 ];
 
 const soonLinks: NavLink[] = [
@@ -34,8 +36,8 @@ const soonLinks: NavLink[] = [
 ];
 
 const accountLinks: NavLink[] = [
-  { label: "Profile", href: "/profile", icon: User },
-  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Profile", href: ROUTES.profile, icon: User },
+  { label: "Settings", href: ROUTES.settings, icon: Settings },
 ];
 
 interface SidebarProps {
@@ -52,7 +54,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   }
 
   function handleLogout() {
-    router.push("/login");
+    destroySession();
+    router.push(ROUTES.login);
+    router.refresh();
   }
 
   return (
@@ -67,7 +71,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col bg-sidebar-bg text-sidebar-foreground transition-transform lg:static lg:translate-x-0",
+          "bg-sidebar-bg text-sidebar-foreground fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col transition-transform lg:static lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -82,14 +86,18 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </button>
         </div>
 
-        <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-6 scrollbar-thin">
+        <nav className="flex-1 scrollbar-thin space-y-6 overflow-y-auto px-3 pb-6">
           <div>
-            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
+            <p className="text-sidebar-foreground/60 px-3 pb-2 text-xs font-semibold tracking-wider uppercase">
               Overview
             </p>
             <ul className="space-y-1">
               {mainLinks.map((link) => (
-                <SidebarLink key={link.label} link={link} active={isActive(link.href)} />
+                <SidebarLink
+                  key={link.label}
+                  link={link}
+                  active={isActive(link.href)}
+                />
               ))}
               {soonLinks.map((link) => (
                 <SidebarLink key={link.label} link={link} disabled />
@@ -98,21 +106,25 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
 
           <div>
-            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
+            <p className="text-sidebar-foreground/60 px-3 pb-2 text-xs font-semibold tracking-wider uppercase">
               Account
             </p>
             <ul className="space-y-1">
               {accountLinks.map((link) => (
-                <SidebarLink key={link.label} link={link} active={isActive(link.href)} />
+                <SidebarLink
+                  key={link.label}
+                  link={link}
+                  active={isActive(link.href)}
+                />
               ))}
             </ul>
           </div>
         </nav>
 
-        <div className="border-t border-sidebar-border p-3">
+        <div className="border-sidebar-border border-t p-3">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-item-hover hover:text-white"
+            className="text-sidebar-foreground hover:bg-sidebar-item-hover flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:text-white"
           >
             <LogOut className="h-4 w-4" />
             Log out
@@ -137,12 +149,12 @@ function SidebarLink({
   if (disabled) {
     return (
       <li>
-        <span className="flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/40">
+        <span className="text-sidebar-foreground/40 flex cursor-not-allowed items-center justify-between rounded-lg px-3 py-2.5 text-sm">
           <span className="flex items-center gap-3">
             <Icon className="h-4 w-4" />
             {link.label}
           </span>
-          <span className="rounded-full bg-sidebar-item-hover px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide">
+          <span className="bg-sidebar-item-hover rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase">
             Soon
           </span>
         </span>
@@ -154,6 +166,7 @@ function SidebarLink({
     <li>
       <Link
         href={link.href}
+        aria-current={active ? "page" : undefined}
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
           active

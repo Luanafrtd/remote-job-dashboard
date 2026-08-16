@@ -9,13 +9,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { categoryStats } from "@/lib/data";
+import type { CategoryStat } from "@/types";
 
-export function CategoryBarChart() {
+export function CategoryBarChart({ data }: { data: CategoryStat[] }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={categoryStats} margin={{ left: -20, right: 10 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+      <BarChart data={data} margin={{ left: -20, right: 10 }}>
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="var(--border)"
+          vertical={false}
+        />
         <XAxis
           dataKey="category"
           tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
@@ -37,7 +41,12 @@ export function CategoryBarChart() {
             fontSize: 12,
           }}
         />
-        <Bar dataKey="value" name="Applications" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
+        <Bar
+          dataKey="value"
+          name="Applications"
+          fill="var(--chart-1)"
+          radius={[6, 6, 0, 0]}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

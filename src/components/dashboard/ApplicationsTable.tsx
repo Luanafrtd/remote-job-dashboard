@@ -11,7 +11,7 @@ export function ApplicationsTable({
     <div className="overflow-x-auto">
       <table className="w-full min-w-[640px] text-left text-sm">
         <thead>
-          <tr className="border-b border-border text-xs text-muted-foreground">
+          <tr className="border-border text-muted-foreground border-b text-xs">
             <th className="pb-3 font-medium">Role</th>
             <th className="pb-3 font-medium">Category</th>
             <th className="pb-3 font-medium">Salary</th>
@@ -19,25 +19,31 @@ export function ApplicationsTable({
             <th className="pb-3 font-medium">Status</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
+        <tbody className="divide-border divide-y">
           {applications.map((application) => (
             <tr key={application.id}>
               <td className="py-3">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-muted text-xs font-semibold text-primary">
+                  <span className="bg-primary-muted text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-semibold">
                     {application.companyLogo}
                   </span>
                   <div>
-                    <p className="font-medium text-foreground">{application.role}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-foreground font-medium">
+                      {application.role}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
                       {application.company} &middot; {application.location}
                     </p>
                   </div>
                 </div>
               </td>
-              <td className="py-3 text-muted-foreground">{application.category}</td>
-              <td className="py-3 text-muted-foreground">{application.salaryRange}</td>
-              <td className="py-3 text-muted-foreground">
+              <td className="text-muted-foreground py-3">
+                {application.category}
+              </td>
+              <td className="text-muted-foreground py-3">
+                {application.salaryRange}
+              </td>
+              <td className="text-muted-foreground py-3">
                 {formatDate(application.appliedOn)}
               </td>
               <td className="py-3">

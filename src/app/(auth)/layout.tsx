@@ -1,22 +1,22 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { GuestLink } from "@/components/layout/GuestLink";
 import { Logo } from "@/components/layout/Logo";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-background lg:flex-row">
-      <div className="hidden flex-1 flex-col justify-between bg-sidebar-bg p-10 text-sidebar-foreground lg:flex">
+    <div className="bg-background flex min-h-screen flex-col lg:flex-row">
+      <div className="bg-sidebar-bg text-sidebar-foreground hidden flex-1 flex-col justify-between p-10 lg:flex">
         <Logo className="text-white" />
         <div className="max-w-md space-y-4">
           <h2 className="text-3xl font-semibold text-white">
             Track every remote application in one place.
           </h2>
-          <p className="text-sm text-sidebar-foreground">
-            Monitor your pipeline, visualize your progress, and never lose
-            track of an opportunity again.
+          <p className="text-sidebar-foreground text-sm">
+            Monitor your pipeline, visualize your progress, and never lose track
+            of an opportunity again.
           </p>
         </div>
-        <p className="text-xs text-sidebar-foreground">
+        <p className="text-sidebar-foreground text-xs">
           &copy; {new Date().getFullYear()} RemoteJob Dashboard. All rights
           reserved.
         </p>
@@ -27,10 +27,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <Logo />
         </div>
         <div className="w-full max-w-sm">{children}</div>
-        <p className="mt-8 text-center text-xs text-muted-foreground">
-          <Link href="/dashboard" className="hover:text-foreground">
-            Continue as guest &rarr;
-          </Link>
+        <p className="text-muted-foreground mt-8 text-center text-xs">
+          <GuestLink />
         </p>
       </div>
     </div>

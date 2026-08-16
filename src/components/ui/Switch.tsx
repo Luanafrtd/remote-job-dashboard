@@ -20,7 +20,7 @@ export function Switch({ checked, onChange, label, disabled }: SwitchProps) {
       onClick={() => onChange(!checked)}
       className={cn(
         "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        checked ? "bg-primary" : "bg-surface-muted border border-border",
+        checked ? "bg-primary" : "bg-surface-muted border-border border",
       )}
     >
       <span

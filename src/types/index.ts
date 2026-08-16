@@ -1,8 +1,5 @@
 export type ApplicationStatus =
-  | "applied"
-  | "interviewing"
-  | "offer"
-  | "rejected";
+  "applied" | "interviewing" | "offer" | "rejected";
 
 export interface JobApplication {
   id: string;

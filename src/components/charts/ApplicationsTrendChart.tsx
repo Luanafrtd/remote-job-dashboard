@@ -10,12 +10,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { monthlyApplicationStats } from "@/lib/data";
+import type { MonthlyApplicationStat } from "@/types";
 
-export function ApplicationsTrendChart() {
+export function ApplicationsTrendChart({
+  data,
+}: {
+  data: MonthlyApplicationStat[];
+}) {
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <AreaChart data={monthlyApplicationStats} margin={{ left: -20, right: 10 }}>
+      <AreaChart data={data} margin={{ left: -20, right: 10 }}>
         <defs>
           <linearGradient id="applications" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
@@ -26,7 +30,11 @@ export function ApplicationsTrendChart() {
             <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="var(--border)"
+          vertical={false}
+        />
         <XAxis
           dataKey="month"
           tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}

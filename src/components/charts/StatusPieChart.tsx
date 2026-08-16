@@ -1,22 +1,33 @@
 "use client";
 
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { statusStats } from "@/lib/data";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import type { StatusStat } from "@/types";
 
-export function StatusPieChart() {
+export function StatusPieChart({ data }: { data: StatusStat[] }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
         <Pie
-          data={statusStats}
+          data={data}
           dataKey="value"
           nameKey="label"
           innerRadius={60}
           outerRadius={90}
           paddingAngle={3}
         >
-          {statusStats.map((entry) => (
-            <Cell key={entry.status} fill={entry.color} stroke="var(--surface)" />
+          {data.map((entry) => (
+            <Cell
+              key={entry.status}
+              fill={entry.color}
+              stroke="var(--surface)"
+            />
           ))}
         </Pie>
         <Tooltip
