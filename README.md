@@ -16,6 +16,8 @@ A modern, responsive dashboard for tracking remote job applications — built wi
 
 Deployed on Vercel, connected to this repo — every push to `main` auto-deploys. The root URL redirects to `/login`; sign in with any non-empty email/password, or use **Continue as guest**, to reach the protected dashboard (there's no real backend, so any input works).
 
+📄 **[Read the case study](CASE_STUDY.md)** — the problem statement, technical challenges, architecture decisions, and before/after performance and accessibility numbers, written up as I'd present it in an interview.
+
 > **Note:** This is a front-end portfolio project. Authentication is a real middleware-enforced route guard, but the "session" it checks is a demo cookie set on submit — there is no backend or database behind it. See [Notes on the mock backend](#notes-on-the-mock-backend) for what a production swap-in looks like.
 
 ## Overview
@@ -220,3 +222,7 @@ Ideas for a next iteration, in rough priority order:
 ## License
 
 [MIT](LICENSE) © Luana Furtado
+
+---
+
+📄 See [CASE_STUDY.md](CASE_STUDY.md) for the full write-up of the technical challenges and decisions behind this project.
