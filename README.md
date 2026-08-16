@@ -1,5 +1,7 @@
 # Remote Job Dashboard
 
+![Remote Job Dashboard preview](branding/og-image.png)
+
 A modern, responsive dashboard for tracking remote job applications — built with **Next.js 15** (App Router), **TypeScript**, and **Tailwind CSS v4**. Includes authentication UI backed by a real middleware route guard, streaming server components with Suspense skeletons, interactive charts, and a full profile/settings experience.
 
 [![CI](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml)
