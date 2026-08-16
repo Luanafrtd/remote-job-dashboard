@@ -135,7 +135,7 @@ export function RegisterForm() {
         Already have an account?{" "}
         <Link
           href={ROUTES.login}
-          className="text-primary font-medium hover:underline"
+          className="text-link font-medium hover:underline"
         >
           Sign in
         </Link>

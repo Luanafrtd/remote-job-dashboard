@@ -6,10 +6,14 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(value: string | Date): string {
   const date = typeof value === "string" ? new Date(value) : value;
+  // Date-only strings (e.g. "2026-08-01") parse as UTC midnight. Formatting
+  // in the viewer's local timezone can then roll the date back a day for
+  // anyone west of UTC, so we render the UTC calendar date explicitly.
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   }).format(date);
 }
 

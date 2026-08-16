@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <div className="bg-background flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
       <Logo />
-      <div className="bg-primary-muted text-primary flex h-16 w-16 items-center justify-center rounded-full">
+      <div className="bg-primary-muted text-link flex h-16 w-16 items-center justify-center rounded-full">
         <Compass className="h-8 w-8" />
       </div>
       <div className="space-y-2">

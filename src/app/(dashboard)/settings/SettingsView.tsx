@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { Bell, Palette, Shield, User } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,6 +13,8 @@ import {
 import { Input, Label } from "@/components/ui/Input";
 import { Switch } from "@/components/ui/Switch";
 import { Toast } from "@/components/ui/Toast";
+import { currentUser } from "@/lib/data";
+import { applyTheme, getStoredTheme, type Theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 type Tab = "account" | "notifications" | "appearance";
@@ -31,9 +33,20 @@ export function SettingsView() {
     weeklySummary: false,
     productUpdates: true,
   });
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+  const [theme, setTheme] = useState<Theme>("system");
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Read the persisted theme after mount, once localStorage is available,
+  // to keep server and client markup identical on first render.
+  useEffect(() => {
+    setTheme(getStoredTheme());
+  }, []);
+
+  function handleThemeChange(next: Theme) {
+    applyTheme(next);
+    setTheme(next);
+  }
 
   function showToast(message: string) {
     setToastMessage(message);
@@ -82,7 +95,7 @@ export function SettingsView() {
                   className={cn(
                     "flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                     activeTab === tab.id
-                      ? "bg-primary-muted text-primary"
+                      ? "bg-primary-muted text-link"
                       : "text-muted-foreground hover:bg-surface-muted hover:text-foreground",
                   )}
                 >
@@ -110,6 +123,19 @@ export function SettingsView() {
                 className="space-y-4"
                 noValidate
               >
+                {/* Hidden username field so password managers can associate
+                    the new password with this account (Chrome/Firefox
+                    accessibility guidance for password-only forms). */}
+                <input
+                  type="email"
+                  name="username"
+                  autoComplete="username"
+                  defaultValue={currentUser.email}
+                  readOnly
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="sr-only"
+                />
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="current-password">Current password</Label>
@@ -144,9 +170,9 @@ export function SettingsView() {
               </form>
 
               <div className="border-border border-t pt-6">
-                <h4 className="text-danger text-sm font-semibold">
+                <h3 className="text-danger text-sm font-semibold">
                   Danger zone
-                </h4>
+                </h3>
                 <p className="text-muted-foreground mt-1 text-sm">
                   Permanently delete your account and all associated data.
                 </p>
@@ -231,12 +257,12 @@ export function SettingsView() {
                 {(["light", "dark", "system"] as const).map((option) => (
                   <button
                     key={option}
-                    onClick={() => setTheme(option)}
+                    onClick={() => handleThemeChange(option)}
                     aria-current={theme === option ? "true" : undefined}
                     className={cn(
                       "rounded-lg border p-4 text-left text-sm font-medium capitalize transition-colors",
                       theme === option
-                        ? "border-primary bg-primary-muted text-primary"
+                        ? "border-primary bg-primary-muted text-link"
                         : "border-border text-foreground hover:bg-surface-muted",
                     )}
                   >
@@ -245,8 +271,8 @@ export function SettingsView() {
                 ))}
               </div>
               <p className="text-muted-foreground mt-4 text-xs">
-                This preview app follows your system theme automatically. Manual
-                theme switching can be wired up as a follow-up enhancement.
+                Applies immediately and is remembered on this device.
+                &quot;System&quot; follows your OS setting automatically.
               </p>
             </CardContent>
           </Card>

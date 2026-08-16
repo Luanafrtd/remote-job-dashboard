@@ -44,24 +44,27 @@ Remote Job Dashboard is a self-contained demo of what a production job-search tr
 - **Sidebar navigation** — responsive, collapses into a mobile drawer (with focus-safe Escape-to-close and scroll lock), active-route highlighting
 - **Profile page** — editable personal info, skills, and activity summary
 - **Settings page** — tabbed account, notification, and appearance preferences with real client-side validation and toast feedback
-- **Charts** — built with [Recharts](https://recharts.org/), fully responsive and theme-aware via CSS custom properties
+- **Charts** — built with [Recharts](https://recharts.org/), fully responsive and theme-aware via CSS custom properties, code-split with `next/dynamic` so their JS only loads once the browser is idle
 - **Branded error handling** — custom `not-found.tsx`, section-scoped `error.tsx` (keeps the sidebar visible on failure), and a root `global-error.tsx`
 - **Generated brand assets** — favicon, apple touch icon, and Open Graph image are generated at build time with `next/og`, not static files
-- **Dark mode** — automatic based on system preference
+- **Theme switching** — light/dark/system, persisted per device, applied via a blocking inline script so there's no flash of the wrong theme on load
 - **Responsive design** — works from mobile through desktop breakpoints
 - **Production metadata** — `robots.ts`, `sitemap.ts`, `manifest.ts`, and security response headers configured out of the box
+- **Tested** — Vitest + Testing Library unit tests and a Playwright end-to-end suite covering the full auth flow, both run in CI
+- **Accessible** — 100/100 Lighthouse accessibility on every page; every color pairing (badges, buttons, chart legends, links) is WCAG AA contrast-checked in both themes, not just eyeballed
 
 ## Tech Stack
 
-| Category  | Technology                                      |
-| --------- | ----------------------------------------------- |
-| Framework | [Next.js 15](https://nextjs.org/) (App Router)  |
-| Language  | TypeScript                                      |
-| Styling   | Tailwind CSS v4                                 |
-| Charts    | Recharts                                        |
-| Icons     | lucide-react                                    |
-| Linting   | ESLint (`eslint-config-next`) + Prettier        |
-| CI        | GitHub Actions (lint, typecheck, format, build) |
+| Category  | Technology                                         |
+| --------- | -------------------------------------------------- |
+| Framework | [Next.js 15](https://nextjs.org/) (App Router)     |
+| Language  | TypeScript                                         |
+| Styling   | Tailwind CSS v4                                    |
+| Charts    | Recharts                                           |
+| Icons     | lucide-react                                       |
+| Testing   | Vitest, Testing Library, Playwright                |
+| Linting   | ESLint (`eslint-config-next`) + Prettier           |
+| CI        | GitHub Actions (lint, typecheck, test, build, e2e) |
 
 ## Architecture
 
@@ -73,6 +76,9 @@ A few decisions worth calling out, since they're the part a code review would ac
 - **Suspense boundaries, not spinners.** The dashboard page composes five independent `<Suspense>` boundaries (`src/app/(dashboard)/dashboard/sections.tsx` + `skeletons.tsx`) instead of one big loading flag. In dev, or once real per-request data is wired in, sections stream in as they resolve. Because the current data is fully static, Next.js correctly prerenders the whole page at build time — the architecture is streaming-ready without paying a runtime cost for data that doesn't need it.
 - **Middleware-enforced auth, not just hidden links.** `src/middleware.ts` checks a session cookie against `PROTECTED_ROUTES` from `src/lib/routes.ts` on every request — visiting `/dashboard` directly with no session bounces you to `/login` before any page code runs.
 - **Charts receive data as props.** Chart components (`src/components/charts/*`) don't import the data module themselves; they're generic renderers fed by their parent section. This keeps them reusable and independently testable.
+- **Charts are lazy-loaded.** Recharts alone accounted for ~123KB of the dashboard's First Load JS. Each chart is wrapped in a small `"use client"` component that calls `next/dynamic(..., { ssr: false })`, so its code is fetched in a separate chunk after the shell is interactive instead of blocking it — verified with Lighthouse before/after (`/dashboard` First Load JS: 228KB → 105KB).
+- **Color tokens are contrast-checked, not eyeballed.** The original palette (`#6366f1` primary, default status colors) failed WCAG AA in several real combinations — text links on the dark background, badge text on muted backgrounds, chart legend text on the card surface, and light-mode status badges all measured under 4.5:1. Since one color can't satisfy "readable on a near-black background" and "readable as white-on-it button text" at the same time (the luminance math is mutually exclusive), a separate `--link` token was introduced for standalone text/links, distinct from `--primary` for solid fills. Every foreground/background pairing in `globals.css` was verified against the WCAG contrast formula before shipping — see the git history for the calculations.
+- **Theming supports an explicit override, not just `prefers-color-scheme`.** `globals.css` defines the dark palette twice: once inside `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {...} }` for OS-driven dark mode, and once under `:root[data-theme="dark"]` so a user's explicit choice always wins. A blocking inline script (`ThemeScript.tsx`) sets `data-theme` before first paint to avoid a flash of the wrong theme; `src/lib/theme.ts` persists the choice to `localStorage`.
 
 ## Project Structure
 
@@ -108,13 +114,19 @@ src/
 ├── lib/
 │   ├── api.ts                   # server-only async data-access layer
 │   ├── data.ts                  # Raw mock/sample data
-│   ├── routes.ts                # Route + protected-route constants
+│   ├── routes.ts                # Route constants + isProtectedRoute()/isAuthRoute()
 │   ├── session.ts               # Demo cookie session helpers
 │   ├── site.ts                  # Site URL/name/description for metadata
+│   ├── theme.ts                 # Theme persistence (localStorage + data-theme)
 │   └── utils.ts                 # cn(), formatDate(), initials()
 ├── types/
 │   └── index.ts                 # Shared TypeScript types
 └── middleware.ts                # Route protection
+
+e2e/
+└── auth.spec.ts                 # Playwright: login/register/logout/404 flows
+
+*.test.ts(x) files sit next to the source they cover (e.g. src/lib/utils.test.ts).
 ```
 
 ## Getting Started
@@ -149,6 +161,9 @@ Open [http://localhost:3000](http://localhost:3000). The root route redirects to
 | `npm run typecheck`    | Run the TypeScript compiler (no emit)  |
 | `npm run format`       | Format the codebase with Prettier      |
 | `npm run format:check` | Check formatting without writing files |
+| `npm run test`         | Run unit tests (Vitest)                |
+| `npm run test:watch`   | Run unit tests in watch mode           |
+| `npm run test:e2e`     | Run the Playwright end-to-end suite    |
 
 ## Routes
 
@@ -184,8 +199,9 @@ This project is zero-config on [Vercel](https://vercel.com) — it's a standard 
 - ✅ `robots.ts` disallows the authenticated routes from indexing while keeping auth pages crawlable
 - ✅ `sitemap.ts` and `manifest.ts` for SEO/PWA metadata
 - ✅ `metadataBase` configured so Open Graph/Twitter image URLs resolve correctly in production
-- ✅ CI pipeline (`.github/workflows/ci.yml`) runs format check, lint, typecheck, and build on every push/PR
+- ✅ CI pipeline (`.github/workflows/ci.yml`) runs format check, lint, typecheck, unit tests, build, and a full Playwright e2e suite on every push/PR
 - ✅ All routes statically prerendered (`○ (Static)` in the build output) — no server compute needed for the current mock data
+- ✅ 100/100 Lighthouse accessibility on every page, 97-99 performance, 100 best practices (audited with Lighthouse + axe-core, not assumed)
 
 ## Notes on the mock backend
 
@@ -197,10 +213,9 @@ This project is zero-config on [Vercel](https://vercel.com) — it's a standard 
 Ideas for a next iteration, in rough priority order:
 
 - Wire up a real auth provider and database
-- Playwright end-to-end tests covering the login → dashboard → logout flow
-- Persist the theme toggle on the Settings page (currently UI-only)
 - Filtering/sorting/pagination on the applications table
 - Turn the "Soon" sidebar items (Applications, Analytics, Companies, Messages) into real pages
+- Component-level visual regression testing (e.g. Playwright screenshot assertions) to catch future contrast/layout regressions automatically
 
 ## License
 

@@ -1,6 +1,6 @@
-import { ApplicationsTrendChart } from "@/components/charts/ApplicationsTrendChart";
-import { CategoryBarChart } from "@/components/charts/CategoryBarChart";
-import { StatusPieChart } from "@/components/charts/StatusPieChart";
+import { ApplicationsTrendChartLazy } from "@/components/charts/ApplicationsTrendChartLazy";
+import { CategoryBarChartLazy } from "@/components/charts/CategoryBarChartLazy";
+import { StatusPieChartLazy } from "@/components/charts/StatusPieChartLazy";
 import { ApplicationsTable } from "@/components/dashboard/ApplicationsTable";
 import {
   Card,
@@ -42,7 +42,7 @@ export async function TrendSection() {
         </div>
       </CardHeader>
       <CardContent>
-        <ApplicationsTrendChart data={data} />
+        <ApplicationsTrendChartLazy data={data} />
       </CardContent>
     </Card>
   );
@@ -59,7 +59,7 @@ export async function StatusSection() {
         </div>
       </CardHeader>
       <CardContent>
-        <StatusPieChart data={data} />
+        <StatusPieChartLazy data={data} />
       </CardContent>
     </Card>
   );
@@ -78,7 +78,7 @@ export async function CategorySection() {
         </div>
       </CardHeader>
       <CardContent>
-        <CategoryBarChart data={data} />
+        <CategoryBarChartLazy data={data} />
       </CardContent>
     </Card>
   );

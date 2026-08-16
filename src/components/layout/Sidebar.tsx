@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 import {
   BarChart3,
   Briefcase,
@@ -48,6 +49,13 @@ interface SidebarProps {
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Move focus into the drawer when it opens, so keyboard users land
+  // somewhere sensible instead of on a now-hidden trigger button.
+  useEffect(() => {
+    if (open) closeButtonRef.current?.focus();
+  }, [open]);
 
   function isActive(href: string) {
     return href !== "#" && pathname === href;
@@ -78,6 +86,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <div className="flex items-center justify-between px-5 py-5">
           <Logo className="text-white" />
           <button
+            ref={closeButtonRef}
             aria-label="Close sidebar"
             onClick={onClose}
             className="text-sidebar-foreground hover:text-white lg:hidden"

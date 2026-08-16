@@ -11,23 +11,24 @@
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
   --primary-muted: #eef2ff;
+  --link: #4f46e5;
 
-  --success: #16a34a;
+  --success: #15803d;
   --success-muted: #dcfce7;
-  --warning: #d97706;
+  --warning: #b45309;
   --warning-muted: #fef3c7;
-  --danger: #dc2626;
+  --danger: #b91c1c;
   --danger-muted: #fee2e2;
-  --info: #0891b2;
+  --info: #0e7490;
   --info-muted: #cffafe;
 
   --muted-foreground: #64748b;
 
-  --chart-1: #4f46e5;
-  --chart-2: #0891b2;
-  --chart-3: #16a34a;
-  --chart-4: #d97706;
-  --chart-5: #dc2626;
+  --chart-1: #4338ca;
+  --chart-2: #0e7490;
+  --chart-3: #15803d;
+  --chart-4: #b45309;
+  --chart-5: #b91c1c;
 
   --sidebar-bg: #0f172a;
   --sidebar-foreground: #cbd5e1;
@@ -48,6 +49,7 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-muted: var(--primary-muted);
+  --color-link: var(--link);
 
   --color-success: var(--success);
   --color-success-muted: var(--success-muted);
@@ -77,8 +79,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark palette: applied when the OS prefers dark and the user hasn't
+   explicitly chosen light, or when the user has explicitly chosen dark.
+   All foreground colors below are tuned to hit WCAG AA (4.5:1) against
+   both --surface and --primary/--*-muted, which #6366f1/#22c55e etc. did
+   not (see README Architecture Decisions). */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --background: #0b1120;
     --foreground: #e2e8f0;
 
@@ -86,11 +93,12 @@
     --surface-muted: #1e293b;
     --border: #1f2937;
 
-    --primary: #6366f1;
+    --primary: #5b52f0;
     --primary-foreground: #ffffff;
     --primary-muted: #1e1b4b;
+    --link: #818cf8;
 
-    --success: #22c55e;
+    --success: #4ade80;
     --success-muted: #14532d;
     --warning: #f59e0b;
     --warning-muted: #451a03;
@@ -101,9 +109,49 @@
 
     --muted-foreground: #94a3b8;
 
+    --chart-1: #818cf8;
+    --chart-2: #22d3ee;
+    --chart-3: #4ade80;
+    --chart-4: #fbbf24;
+    --chart-5: #fb7185;
+
     --sidebar-bg: #0b0f1a;
     --sidebar-border: #1f2937;
   }
+}
+
+:root[data-theme="dark"] {
+  --background: #0b1120;
+  --foreground: #e2e8f0;
+
+  --surface: #111827;
+  --surface-muted: #1e293b;
+  --border: #1f2937;
+
+  --primary: #5b52f0;
+  --primary-foreground: #ffffff;
+  --primary-muted: #1e1b4b;
+  --link: #818cf8;
+
+  --success: #4ade80;
+  --success-muted: #14532d;
+  --warning: #f59e0b;
+  --warning-muted: #451a03;
+  --danger: #f87171;
+  --danger-muted: #450a0a;
+  --info: #22d3ee;
+  --info-muted: #083344;
+
+  --muted-foreground: #94a3b8;
+
+  --chart-1: #818cf8;
+  --chart-2: #22d3ee;
+  --chart-3: #4ade80;
+  --chart-4: #fbbf24;
+  --chart-5: #fb7185;
+
+  --sidebar-bg: #0b0f1a;
+  --sidebar-border: #1f2937;
 }
 
 * {

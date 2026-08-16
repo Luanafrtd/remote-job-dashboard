@@ -24,7 +24,7 @@ export function ApplicationsTable({
             <tr key={application.id}>
               <td className="py-3">
                 <div className="flex items-center gap-3">
-                  <span className="bg-primary-muted text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-semibold">
+                  <span className="bg-primary-muted text-link flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-semibold">
                     {application.companyLogo}
                   </span>
                   <div>
