@@ -221,6 +221,14 @@ Ideas for a next iteration, in rough priority order:
 - Turn the "Soon" sidebar items (Applications, Analytics, Companies, Messages) into real pages
 - Component-level visual regression testing (e.g. Playwright screenshot assertions) to catch future contrast/layout regressions automatically
 
+## My Role
+
+I designed and built Remote Job Dashboard end to end as a solo portfolio project — the UI/UX (route groups, streaming layout, theming), and the full-stack front-end implementation: middleware-based auth guarding, the mock data-access layer, and the test suite.
+
+## What I Learned
+
+The color-contrast work was the clearest design/engineering crossover here: one primary color can't simultaneously satisfy "readable on a near-black background" and "readable as white-on-it button text," so fixing it meant introducing a separate `--link` token rather than eyeballing a single value into working everywhere. On the performance side, lazy-loading the charts cut the dashboard's First Load JS from 228KB to 105KB — a concrete reminder to check what's actually shipping in the bundle rather than assuming a library is "just" what it costs to import.
+
 ## License
 
 [MIT](LICENSE) © Luana Furtado
