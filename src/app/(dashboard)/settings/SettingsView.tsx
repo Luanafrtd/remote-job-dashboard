@@ -76,9 +76,9 @@ export function SettingsView() {
 
   function handleDeleteAccount() {
     const confirmed = window.confirm(
-      "This is a demo account — no data will actually be deleted. Continue anyway?",
+      "This is a demo account. No data will actually be deleted. Continue anyway?",
     );
-    if (confirmed) showToast("This is a demo — no account was deleted.");
+    if (confirmed) showToast("This is a demo. No account was deleted.");
   }
 
   return (

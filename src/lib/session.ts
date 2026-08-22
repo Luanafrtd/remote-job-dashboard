@@ -4,7 +4,7 @@ const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
 /**
  * Demo-only session handling: sets a lightweight, non-httpOnly cookie so
- * `middleware.ts` can gate the dashboard routes. There is no real backend —
+ * `middleware.ts` can gate the dashboard routes. There is no real backend;
  * swap this for a proper server-issued session (e.g. NextAuth.js, Clerk,
  * Supabase Auth) when wiring up real authentication.
  */

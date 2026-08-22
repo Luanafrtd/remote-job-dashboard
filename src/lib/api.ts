@@ -22,7 +22,7 @@ import type {
  * real one would be: server components fetch in parallel, each wrapped in
  * its own <Suspense> boundary so slower sections don't block faster ones.
  *
- * Swap the bodies below for real fetch()/ORM calls against your backend —
+ * Swap the bodies below for real fetch()/ORM calls against your backend;
  * call sites don't need to change since they already treat this as async.
  */
 
