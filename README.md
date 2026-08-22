@@ -2,7 +2,7 @@
 
 ![Remote Job Dashboard preview](branding/og-image.png)
 
-A modern, responsive dashboard for tracking remote job applications, built with **Next.js 15** (App Router), **TypeScript**, and **Tailwind CSS v4**. Includes authentication UI backed by a real middleware route guard, streaming server components with Suspense skeletons, interactive charts, and a full profile/settings experience.
+A single place for a job seeker to track every application and follow-up, instead of a spreadsheet that's always a little out of date. Built with **Next.js 15** (App Router), **TypeScript**, and **Tailwind CSS v4** as a front-end skill demo: authentication UI backed by a real middleware route guard, streaming server components with Suspense skeletons, interactive charts, and a full profile/settings experience.
 
 [![CI](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Luanafrtd/remote-job-dashboard/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://remote-job-dashboard.vercel.app)
@@ -24,7 +24,7 @@ Deployed on Vercel, connected to this repo. Every push to `main` auto-deploys. T
 
 ## Overview
 
-Remote Job Dashboard is a self-contained demo of what a production job-search tracker's front end looks like: a protected dashboard behind real middleware, streaming server components, a full auth flow, and a profile/settings area, all statically prerendered and deployed on Vercel. It exists to show how the pieces of a modern Next.js App Router app fit together: route groups, server/client component boundaries, a swappable data-access layer, and production metadata, rather than to be a real product with a backend.
+Applying to a dozen roles across a dozen browser tabs makes it easy to lose track of which company you already followed up with, and a spreadsheet only stays accurate for as long as someone remembers to update it. Remote Job Dashboard is built for exactly that: a single, fast place to see every application, its status, and what needs a follow-up next. This repo is the front end of that idea, built to demonstrate how a production Next.js App Router app is actually put together: a protected dashboard behind real middleware, streaming server components with Suspense skeletons, a full auth flow, and a profile/settings area, all statically prerendered and deployed on Vercel. Route groups, server/client component boundaries, a swappable data-access layer, and production metadata are all wired up the way they would be in a real product; see the callout above for exactly what's real versus simulated.
 
 ## Screenshots
 
